@@ -2,6 +2,7 @@ import { useConvexAuth } from "convex/react";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import RootLayout from "./layout";
+import { ThemeProvider } from "./components/theme-provider";
 
 const App = () => {
   const { isAuthenticated, isLoading } = useConvexAuth();
@@ -20,9 +21,9 @@ const App = () => {
     }
   });
   return (
-    <div>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <RootLayout />
-    </div>
+    </ThemeProvider>
   );
 };
 
