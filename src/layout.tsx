@@ -1,6 +1,5 @@
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import UserAuthPage from "./components/auth/users-auth-page";
-import { useAuthActions } from "@convex-dev/auth/react";
 import { useConvexAuth } from "convex/react";
 import { useEffect } from "react";
 import { useGetCurrentUser } from "./api/users/query/users-query";

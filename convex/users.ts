@@ -50,12 +50,6 @@ export const updateUser = mutation({
       throw new Error("User not found");
     }
 
-    const updates: {
-      isAdmin?: boolean;
-      verified?: boolean;
-      hasPayment?: boolean;
-    } = {};
-
     await ctx.db.patch(args.userId, {
       isAdmin: args.isAdmin ?? user.isAdmin,
       verified: args.verified ?? user.verified,

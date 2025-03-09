@@ -25,7 +25,6 @@ export default function CustomMobileNumberInput<T extends FieldValues>({
   name,
   label,
   defaultValue,
-  disabled,
   error,
   className,
 }: Readonly<CustomMobileNumberInputProps<T>>) {
