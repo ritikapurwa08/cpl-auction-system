@@ -56,7 +56,7 @@ export default function CustomInput<T extends FieldValues>({
       <FormControl>
         <div className="relative">
           {(Icon || iconSrc) && (
-            <div className="absolute left-3 top-1/2 pl-2 -translate-y-1/2">
+            <div className="absolute  left-3 top-1/2 pl-2 -translate-y-1/2">
               {Icon && <Icon className="text-pink-400" size={20} />}
               {iconSrc && (
                 <img src={iconSrc} height={20} width={20} alt="Field icon" />
@@ -69,9 +69,10 @@ export default function CustomInput<T extends FieldValues>({
             disabled={disabled}
             placeholder={label}
             className={cn(
-              " border-pink-500 input focus:border-none transition-all duration-300 ease-in-out focus-visible:ring-pink-500 focus-visible:ring-1  autofill-bg-transparent ",
-
-              Icon || iconSrc ? "pl-10" : "pl-2",
+              "border border-pink-300 bg-gray-800 text-gray-100 placeholder-gray-400", // Clearer borders, background, and text colors
+              "rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500/50 focus:border-pink-500", // Refined focus styling
+              "transition-all duration-200 ease-in-out", // Smooth transitions
+              Icon || iconSrc ? "pl-10" : "pl-3", //Adjusted padding
               className
             )}
             onChange={(e) => {

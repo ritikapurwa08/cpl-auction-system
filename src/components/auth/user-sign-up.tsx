@@ -1,10 +1,11 @@
+// UserSignUp.tsx
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuthActions } from "@convex-dev/auth/react";
+import { useAuthActions } from "@convex-dev/auth/react"; //Make sure you've installed this!
 import { useNavigate } from "react-router-dom";
-import { Form } from "@/components/ui/form";
+import { Form } from "@/components/ui/form"; // Make sure this path is correct
 
 import { Button } from "@/components/ui/button";
 
@@ -13,6 +14,7 @@ import CustomInput from "../custom-input";
 import CustomEmailInput from "../custom-email-input";
 import CustomPasswordInput from "../custom-password-input";
 import SubmitButton from "../submit-button";
+import CustomMobileNumberInput from "../custom-mobile-number-input";
 
 // Example avatars array. In a real-world scenario, you might fetch this.
 
@@ -24,9 +26,9 @@ const UserSignUp = ({
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(true);
+  const [showPassword, setShowPassword] = useState(true); //Should probably be false by default!
   const [error, setError] = useState<string | null>(null);
-  const [, setEmail] = useState(true);
+  const [, setEmail] = useState(true); // This seems unused.  Consider removing.
   const navigate = useNavigate();
 
   // Zod schema for sign up form.
@@ -46,13 +48,10 @@ const UserSignUp = ({
         .string()
         .email("Please enter a valid email address so we can reach you.")
         .min(2, "We need your email to continue the registration process."),
-      customImage: z
+      mobileNo: z
         .string()
-        .optional()
-        .refine(
-          (value) => value !== "",
-          "Kindly provide a profile image so we can personalize your experience."
-        ),
+        .min(10, "Please enter a valid 10-digit mobile number.")
+        .max(10, "Please enter a valid 10-digit mobile number."), // Corrected max length
       password: z
         .string()
         .min(
@@ -88,7 +87,7 @@ const UserSignUp = ({
       name: "",
       email: "",
       password: "",
-      customImage: "",
+      mobileNo: "",
       confirmPassword: "",
     },
   });
@@ -102,13 +101,15 @@ const UserSignUp = ({
     setLoading(true);
     setError(null);
     await signIn("password", {
+      //Check if this is the correct method with Convex
       name: data.name,
       email: data.email,
       password: data.password,
+      mobileNo: data.mobileNo,
       flow: "signUp",
     })
       .then(() => {
-        navigate("/chat");
+        navigate("/");
       })
       .catch((err) => {
         console.error(err);
@@ -130,13 +131,14 @@ const UserSignUp = ({
 
       <Form {...form}>
         <form
-          className="flex flex-col space-y-3 max-w-xl w-full mx-auto justify-start h-fit"
+          className="flex flex-col space-y-6 max-w-xl w-full mx-auto justify-start h-fit"
           onSubmit={form.handleSubmit(handleSignUp)}
         >
           <div className="flex justify-center items-center"></div>
           <CustomInput control={form.control} name="name" label="Name" />
+
           <CustomEmailInput
-            setIsEmailAvailable={setEmail}
+            setIsEmailAvailable={setEmail} // Likely unused, consider removing
             control={form.control}
             name="email"
             label="Email"
@@ -157,13 +159,19 @@ const UserSignUp = ({
             setShowPassword={setShowPassword}
             placeholder="Confirm your password"
           />
+          <CustomMobileNumberInput
+            control={form.control}
+            name="mobileNo"
+            label="Mobile Number"
+            // No need for number and setNumber props anymore
+          />
 
           {error && <div className="text-red-500">{error}</div>}
 
           <SubmitButton
             type="submit"
             isLoading={loading}
-            className="bg-pink-400 hover:bg-pink-500 transition-all duration-300 ease-in-out"
+            className="bg-pink-400 text-white hover:bg-pink-500 transition-all duration-300 ease-in-out"
             loadingText="Signing Up"
           >
             {loading ? (

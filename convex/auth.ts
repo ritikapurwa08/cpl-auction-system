@@ -9,6 +9,9 @@ const CustomUserSchema = Password<DataModel>({
       name: params.name as string,
       email: params.email as string,
       mobileNo: params.mobileNo as string,
+      isAdmin: false,
+      verified: false,
+      paymentDone: false,
     };
   },
 });

@@ -1,5 +1,5 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { query } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
 export const getCurrentUser = query({
@@ -27,5 +27,41 @@ export const checkEmail = query({
       .unique();
 
     return !!user;
+  },
+});
+
+export const getAllUsers = query({
+  handler: async (ctx) => {
+    const users = await ctx.db.query("users").collect();
+    return users;
+  },
+});
+
+export const updateUser = mutation({
+  args: {
+    userId: v.id("users"),
+    isAdmin: v.optional(v.boolean()),
+    verified: v.optional(v.boolean()),
+    paymentDone: v.optional(v.boolean()),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db.get(args.userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const updates: {
+      isAdmin?: boolean;
+      verified?: boolean;
+      hasPayment?: boolean;
+    } = {};
+
+    await ctx.db.patch(args.userId, {
+      isAdmin: args.isAdmin ?? user.isAdmin,
+      verified: args.verified ?? user.verified,
+      paymentDone: args.paymentDone ?? user.paymentDone,
+    });
+
+    return args.userId;
   },
 });

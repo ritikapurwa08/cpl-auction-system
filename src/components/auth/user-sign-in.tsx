@@ -5,7 +5,6 @@ import { useAuthActions } from "@convex-dev/auth/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form } from "@/components/ui/form";
-
 import { Button } from "@/components/ui/button";
 import CustomInput from "../custom-input";
 import CustomPasswordInput from "../custom-password-input";
@@ -48,7 +47,6 @@ const UserSignIn = ({
       await signIn("password", {
         email: data.email,
         password: data.password,
-
         flow: "signIn",
       })
         .catch((err: any) => {
@@ -84,6 +82,7 @@ const UserSignIn = ({
           onSubmit={form.handleSubmit(handleSignIn)}
         >
           <CustomInput control={form.control} name="email" label="Email" />
+
           <CustomPasswordInput
             control={form.control}
             name="password"
@@ -97,9 +96,10 @@ const UserSignIn = ({
           <SubmitButton
             type="submit"
             isLoading={loading}
+            className="text-white"
             loadingText="Signing Up"
           >
-            Sign Up
+            Sign In
           </SubmitButton>
         </form>
       </Form>
